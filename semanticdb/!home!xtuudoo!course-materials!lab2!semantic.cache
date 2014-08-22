@@ -1,0 +1,34 @@
+;; Object lab2/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "lab2/"
+  :tables
+  (list
+    (semanticdb-table "bomb.c"
+      :major-mode 'c-mode
+      :tags 
+        '( ("stdio.h" include (:system-flag t) nil [1172 1190])
+            ("stdlib.h" include (:system-flag t) nil [1191 1210])
+            ("support.h" include nil nil [1211 1231])
+            ("phases.h" include nil nil [1232 1251])
+            ("infile" variable
+               (:pointer 1
+                :type ("FILE" type (:type "class") nil nil))
+                nil [1441 1454])
+            ("main" function
+               (:arguments 
+                  ( ("argc" variable (:type "int") (reparse-symbol arg-sub-list) [1465 1474])
+                    ("argv" variable
+                       (:pointer 1
+                        :dereference 1
+                        :type "char")
+                        (reparse-symbol arg-sub-list) [1475 1488]))                  
+                :type "int")
+                nil [1456 4243]))          
+      :file "bomb.c"
+      :pointmax 4244
+      :fsize 4243
+      :lastmodtime '(21461 51148 66126 86000)
+      :unmatched-syntax nil))
+  :file "!home!xtuudoo!course-materials!lab2!semantic.cache"
+  :semantic-tag-version "2.0"
+  :semanticdb-version "2.2")

@@ -1,0 +1,82 @@
+;; Object include/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "include/"
+  :tables
+  (list
+    (semanticdb-table "features.h"
+      :major-mode 'c-mode
+      :tags 
+        '( ("_FEATURES_H" variable (:constant-flag t) nil [818 829])
+            ("__KERNEL_STRICT_NAMES" variable (:constant-flag t) nil [5462 5483])
+            ("__GNUC_PREREQ" variable (:constant-flag t) nil [5915 5928])
+            ("_ISOC95_SOURCE" variable (:constant-flag t) nil [6081 6095])
+            ("_ISOC99_SOURCE" variable (:constant-flag t) nil [6131 6145])
+            ("_ISOC11_SOURCE" variable (:constant-flag t) nil [6181 6195])
+            ("_POSIX_SOURCE" variable (:constant-flag t) nil [6230 6243])
+            ("_POSIX_C_SOURCE" variable (:constant-flag t) nil [6280 6295])
+            ("_XOPEN_SOURCE" variable (:constant-flag t) nil [6336 6349])
+            ("_XOPEN_SOURCE_EXTENDED" variable (:constant-flag t) nil [6395 6417])
+            ("_LARGEFILE64_SOURCE" variable (:constant-flag t) nil [6458 6477])
+            ("_DEFAULT_SOURCE" variable (:constant-flag t) nil [6514 6529])
+            ("_BSD_SOURCE" variable (:constant-flag t) nil [6562 6573])
+            ("_SVID_SOURCE" variable (:constant-flag t) nil [6607 6619])
+            ("_ATFILE_SOURCE" variable (:constant-flag t) nil [6655 6669])
+            ("_POSIX_SOURCE" variable (:constant-flag t) nil [8407 8420])
+            ("_POSIX_C_SOURCE" variable (:constant-flag t) nil [8457 8472])
+            ("__USE_XOPEN" variable (:constant-flag t) nil [9674 9685])
+            ("__USE_XOPEN_EXTENDED" variable (:constant-flag t) nil [10189 10209])
+            ("__USE_LARGEFILE64" variable (:constant-flag t) nil [10333 10350])
+            ("__USE_BSD" variable (:constant-flag t) nil [10563 10572])
+            ("__USE_SVID" variable (:constant-flag t) nil [10612 10622])
+            ("__USE_ATFILE" variable (:constant-flag t) nil [10664 10676])
+            ("__USE_GNU" variable (:constant-flag t) nil [10715 10724])
+            ("__USE_FORTIFY_LEVEL" variable (:constant-flag t) nil [11061 11080])
+            ("stdc-predef.h" include (:system-flag t) nil [11211 11235])
+            ("__GNU_LIBRARY__" variable (:constant-flag t) nil [11668 11683])
+            ("__GLIBC__" variable (:constant-flag t) nil [11827 11836])
+            ("__GLIBC_MINOR__" variable (:constant-flag t) nil [11847 11862])
+            ("__GLIBC_PREREQ" variable (:constant-flag t) nil [11875 11889])
+            ("sys/cdefs.h" include (:system-flag t) nil [12089 12113])
+            ("gnu/stubs.h" include (:system-flag t) nil [12936 12958]))          
+      :file "features.h"
+      :pointmax 12986
+      :fsize 12985
+      :lastmodtime '(21462 37898 0 0)
+      :unmatched-syntax nil
+      :lexical-table 
+        '(("__USE_XOPEN" . ((number "1" 9686 . 9687)))
+          ("__USE_XOPEN_EXTENDED" . ((number "1" 10210 . 10211)))
+          ("__USE_BSD" . ((number "1" 10573 . 10574)))
+          ("_ISOC99_SOURCE" . ((number "1" 6146 . 6147)))
+          ("__USE_ATFILE" . ((number "1" 10677 . 10678)))
+          ("_ISOC95_SOURCE" . ((number "1" 6096 . 6097)))
+          ("_LARGEFILE64_SOURCE" . ((number "1" 6478 . 6479)))
+          ("__USE_LARGEFILE64" . ((number "1" 10351 . 10352)))
+          ("__KERNEL_STRICT_NAMES")
+          ("_BSD_SOURCE" . ((number "1" 6574 . 6575)))
+          ("_POSIX_SOURCE" . ((number "1" 8421 . 8422)))
+          ("__GLIBC__" . ((number "2" 11837 . 11838)))
+          ("_XOPEN_SOURCE_EXTENDED" . ((number "1" 6418 . 6419)))
+          ("_XOPEN_SOURCE" . ((number "700" 6350 . 6353)))
+          ("_ATFILE_SOURCE" . ((number "1" 6670 . 6671)))
+          ("__USE_FORTIFY_LEVEL" . ((number "0" 11081 . 11082)))
+          ("_FEATURES_H" . ((number "1" 830 . 831)))
+          ("__GNU_LIBRARY__" . ((number "6" 11684 . 11685)))
+          ("__GLIBC_MINOR__" . ((number "19" 11863 . 11865)))
+          ("__GLIBC_PREREQ" (spp-arg-list ("maj" "min") 11889 . 11899) . ((semantic-list "((__GLIBC__ << 16) + __GLIBC_MINOR__ >= ((maj) << 16) + (min))" 11903 . 11965)))
+          ("__GNUC_PREREQ" (spp-arg-list ("maj" "min") 5928 . 5938) . ((number "0" 5939 . 5940)))
+          ("__USE_GNU" . ((number "1" 10725 . 10726)))
+          ("_ISOC11_SOURCE" . ((number "1" 6196 . 6197)))
+          ("_POSIX_C_SOURCE" . ((number "200809L" 8473 . 8480)))
+          ("__USE_SVID" . ((number "1" 10623 . 10624)))
+          ("_DEFAULT_SOURCE" . ((number "1" 6530 . 6531)))
+          ("_SVID_SOURCE" . ((number "1" 6620 . 6621)))
+          )
+)
+    (semanticdb-table "stdc-predef.h"
+      :file "stdc-predef.h"
+      :fsize 2153
+      :lastmodtime '(21462 37899 0 0)))
+  :file "!usr!include!semantic.cache"
+  :semantic-tag-version "2.0"
+  :semanticdb-version "2.2")

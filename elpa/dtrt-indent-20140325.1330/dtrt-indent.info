@@ -1,0 +1,477 @@
+This is
+/tmp/dtrt-indent21321fqp/dtrt-indent-20140325.1330/dtrt-indent.info,
+produced by makeinfo version 4.13 from
+/home/melpa/melpa/working/dtrt-indent/dtrt-indent.texi.
+
+This manual is for dtrt-indent, version 0.2.0.
+
+   Copyright (C) 2003, 2007, 2008 Julian Scheid
+
+     Permission is granted to ...
+
+
+File: dtrt-indent.info,  Node: Top,  Up: (dir)
+
+dtrt-indent
+***********
+
+This is the user manual for dtrt-indent, version 0.2.0.
+
+* Menu:
+
+* Introduction::    What dtrt-indent is about
+* Usage::           Basic usage information
+* Heuristics::      Details on dtrt-indent's inner workings
+* Diagnosis::       How to reveal dtrt-indent's inner workings
+* Configuration::   How to fine-tune dtrt-indent
+* Copying::         dtrt-indent is distributed under GPL v2
+
+
+File: dtrt-indent.info,  Node: Introduction,  Next: Usage,  Prev: Top,  Up: Top
+
+1 Introduction
+**************
+
+1.1 Motivation
+==============
+
+Today, open source is omnipresent and programmers will often find
+themselves editing other people's code.  Different people prefer
+different kinds of indentation - there are arguments for using 2 or 8
+spaces per level (and anything in between) and for using "hard" or
+"soft" tabs.
+
+   This usually isn't a problem when viewing other people's code, but
+when editing it you'll find that it is very annoying if your editor
+settings don't match the ones used for creating the file in question.
+
+   Here's an example: suppose you are editing a C file that was created
+with 3 spaces per level but your `c-basic-offset' is set to 4.  You'll
+end up with something like this:
+
+int main()
+{
+   printf(``hello\n'');
+    exit(10);
+//  ^ indented at 4 spaces instead of 3
+}
+
+   That's where `dtrt-indent' comes in: when you open a file, it will
+perform a quick analysis of the file's indentation and will make an
+educated guess on the indentation offset and the tab setting used for
+creating the file.  If the guess is deemed reliable, the appropriate
+settings will be transparently adjusted; otherwise, they will be left
+alone.
+
+   `dtrt-indent' errs on the side of caution: if the settings can't be
+determined with a fairly high reliability it won't touch them, leaving
+you off no worse.  More often than not, however, it will be able to
+make a reliable guess and so, in general, you should find editing
+foreign files much more pleasurable than before.
+
+1.2 Scope
+=========
+
+`dtrt-indent' analyzes and adjusts two related settings: the indentation
+offset and `indent-tabs-mode'.
+
+   The indentation offset is stored in a variable that depends on the
+major mode.  The following major modes are supported:
+
+Major Mode                    Indentation Offset Variable
+-------------------------------------------------------------------------- 
+c-mode                        c-basic-offset
+c++-mode                      c-basic-offset
+java-mode                     c-basic-offset
+jde-mode                      c-basic-offset
+javascript-mode               c-basic-offset
+objc-mode                     c-basic-offset
+php-mode                      c-basic-offset
+perl-mode                     perl-indent-level
+ruby-mode                     ruby-indent-level
+ada-mode                      ada-indent
+sh-mode                       sh-basic-offset
+pascal-mode                   pascal-indent-level
+
+   Note that python-mode is not included in this list because it already
+comes with indentation offset guessing.
+
+   `indent-tabs-mode' governs whether indentation uses "hard" tabs
+(ASCII 9) or space characters only and is independent of the major mode.
+
+1.3 Limitations
+===============
+
+`dtrt-indent' currently cannot guess the indentation style; for
+instance, in Emacs C code can be formatted with a number of different
+styles such as `k&r', `stroustrup' or `ellemtel'.  The effects of this
+setting goes beyond just the indentation offset; `dtrt-indent'
+currently isn't capable of detecting and adjusting this setting.
+
+   Also, when a file uses hard tabs `dtrt-indent' currently won't make
+an attempt to figure out how many spaces per tab were used for creating
+the file or whether irregular tab stops were used.
+
+
+File: dtrt-indent.info,  Node: Usage,  Next: Heuristics,  Prev: Introduction,  Up: Top
+
+2 Usage
+*******
+
+2.1 Basic Usage
+===============
+
+`dtrt-indent' is a minor mode and can be used in two ways:
+
+   The recommended usage is to enable it globally by putting the
+following in your `.emacs':
+
+(require 'dtrt-indent)
+(dtrt-indent-mode 1)
+
+   When enabled globally, every visited file that satisfies the
+conditions outlined in the chapter on heuristics (*Note Heuristics::.)
+will be analyzed and its settings adjusted if necessary.  Remember that
+dtrt-indent's default settings are conservative so enabling it globally
+should be safe.  (There are also facilities for informing you when
+settings are changed, and for undoing any changes in case of a wrong
+guess.)
+
+   If you don't trust dtrt-indent or generally dislike things happening
+behind your back, however, you might want to leave it disabled by
+default and only enable it when you notice that the file you're about
+to edit requires adjustment.  In this case, put the following in your
+`.emacs':
+
+(require 'dtrt-indent)
+
+   Then, to attempt adjustment of the currently visited file, do
+
+M-x dtrt-indent-mode
+
+   Note that by enabling dtrt-indent only selectively, you will lose a
+lot of its utility.  It is strongly recommended that you enable it
+globally and tweak its settings, if necessary, should it not perform as
+well as you'd like.
+
+2.2 Undoing wrong guesses
+=========================
+
+Normally, dtrt-indent will do its job in the background without you
+having to do anything.  You should only have to intervene if it makes
+bad decisions; this should happen only rarely.  When it does happen,
+you can use `M-x dtrt-indent-undo' - this will revert any settings that
+have been changed back to what they were before.
+
+   Should `dtrt-indent' guess wrong, you can also consider fine-tuning
+it as described in the chapter on configuration.  *Note Configuration::.
+
+2.3 Excluding certain files
+===========================
+
+Usually, dtrt-indent should do the right thing for all files by
+default, however you may want to keep it from touching the settings for
+specific files.
+
+   As explained in the chapter on heuristics (*Note: Heuristics::.),
+there are several ways in which you can achieve this:
+
+   * By including the File Variable `dtrt-indent-mode: 0', dtrt-indent
+     will be disabled for that file.  Note that this is the standard
+     way of disabling a minor mode for a given file.
+
+   * If you include a File Variable for the indentation offset (variable
+     name depends on major mode) and/or for `indent-tabs-mode',
+     dtrt-indent mode won't override the setting in question.
+
+   * You can set `dtrt-indent-accept-file-function' to a function
+     returning `nil' for the file in question.  Your function might
+     reject the file purely based on its file name or path, it could
+     take a closer look at the file contents before making a choice, or
+     it could consult some external data source.
+
+
+
+File: dtrt-indent.info,  Node: Heuristics,  Next: Diagnosis,  Prev: Usage,  Up: Top
+
+3 Heuristics
+************
+
+This chapter describes the inner workings of dtrt-indent and how it
+arrives at a conclusion on whether or not to change the indentation
+settings, and to which value.
+
+   If you find the information in this chapter confusing, see the
+chapter on diagnosis (*Note: Diagnosis::.) to learn how to get a more
+hands-on understanding of the process.
+
+3.1 Files Analyzed
+==================
+
+`dtrt-indent' will analyze and potentially adjust settings only for
+files that meet all of the following conditions:
+
+   * When visiting the file, Emacs uses one of the supported major
+     modes.  For example, files that are opened using
+     "fundamental-mode" will be ignored because dtrt-indent doesn't
+     know how to analyze them.
+
+   * The file doesn't set the indentation offset variable corresponding
+     to the major mode as a File Variable.  (If it does, that's a good
+     indication that no guesswork is required.)
+
+   * The file doesn't specify `dtrt-indent-mode: 0' as a File Variable.
+     (If it does, it tells dtrt-indent that its services are not
+     desired for this file.)
+
+   * `dtrt-indent-accept-file-function' doesn't return nil for the
+     file's name.  (By default, it will accept all files, but you might
+     want to set it to ignore certain files.)
+
+
+3.1.1 Configuration settings used at this stage
+-----------------------------------------------
+
+`dtrt-indent-accept-file-function', `dtrt-indent-mode' (if set as a
+File Variable)
+
+3.2 Lines Analyzed
+==================
+
+In order to limit performance degradation due to the analysis, only a
+fixed number of lines will be analyzed.  If the size of the file is
+less than this number of lines, the whole file will be analyzed;
+otherwise, the given number of lines at the beginning of the file are
+analyzed.
+
+   Certain lines are ignored during analysis:
+
+   * Empty lines.
+
+   * Lines that are not indented (indentation offset 0).
+
+   * Lines that are the continuation of a multi-line comment or a
+     multi-line statement or expression.
+
+   * Lines that only contain a single character can be ignored; by
+     default, however, they are included.
+
+
+   If, after ignoring any lines that are not eligible, the amount of
+relevant lines is smaller than a given threshold then the file is
+treated as not fit for analysis and no guess will be made.
+
+3.2.1 Configuration settings used at this stage
+-----------------------------------------------
+
+`dtrt-indent-min-relevant-lines', `dtrt-indent-max-relevant-lines',
+`dtrt-indent-ignore-single-chars-flag'
+
+3.3 Histogram Generation
+========================
+
+For the remaining lines - those eligible within the fixed range - a
+histogram is generated.  The histogram informs `dtrt-indent' about how
+many lines are indented with one space, how many with two spaces, how
+many with three spaces, etc.
+
+3.4 Offset Assessment
+=====================
+
+Using the histogram, `dtrt-indent' determines for each of the potential
+indentation offsets (by default, 2 through 8) how many lines are
+indented with a multiple of that offset.
+
+   Offsets for which the histogram doesn't contain enough distinct
+indentations might be ignored; by default, however, a single
+indentation per offset is accepted.
+
+   After this step, dtrt-indent has a map of probabilities for each of
+the potential offsets.
+
+3.4.1 Configuration settings used at this stage
+-----------------------------------------------
+
+`dtrt-indent-min-offset', `dtrt-indent-max-offset',
+`dtrt-indent-min-matching-indentations'
+
+3.5 Offset Merging
+==================
+
+As a next step, offsets that are a factor of another offset with
+similar probability are discarded; this is necessary because in a file
+that has been indented with, say, 4 spaces per level, 2 spaces per
+level could otherwise be wrongly guessed.
+
+3.5.1 Configuration settings used at this stage
+-----------------------------------------------
+
+`dtrt-indent-max-merge-deviation'
+
+3.6 Final Evaluation
+====================
+
+Finally, `dtrt-indent' looks at the highest probability of all
+potential offsets; if that probablity is below a given threshold, the
+guess is deemed unreliable and no settings are changed.
+
+   Otherwise, as an additional sanity check, `dtrt-indent' will compare
+the highest probability to the second-highest probability; if it is not
+significantly higher, it will be deemed unreliable as well.
+
+   If the analysis yielded a best guess that exceeds the absolute
+threshold and the relative threshold when compared to the second-best
+guess, that guess is deemed reliable and the indentation setting will
+be modified.
+
+3.6.1 Configuration settings used at this stage
+-----------------------------------------------
+
+`dtrt-indent-min-quality', `dtrt-indent-min-indent-superiority'
+
+3.7 `indent-tabs-mode' Setting
+==============================
+
+For determining hard vs. soft tabs, `dtrt-indent' counts the number of
+lines out of the eligible lines in the fixed segment that are indented
+using hard tabs, and the number of lines indented using spaces.  If
+either count is significantly higher than the other count,
+`indent-tabs-mode' will be modified.
+
+3.7.1 Configuration settings used at this stage
+-----------------------------------------------
+
+`dtrt-indent-min-soft-tab-superiority',
+`dtrt-indent-min-hard-tab-superiority'
+
+
+File: dtrt-indent.info,  Node: Diagnosis,  Next: Configuration,  Prev: Heuristics,  Up: Top
+
+4 Diagnosis
+***********
+
+The previous chapter described the inner workings of dtrt-indent (*Note
+Heuristics::.)  It is good to know what it's doing, but it is even
+better to be able to see how it arrives at a particular conclusion.
+That's exactly what `dtrt-indent-diagnosis' provides: call `M-x
+dtrt-indent-diagnosis' while visiting the buffer whose analysis you
+wish to scrutinize.
+
+   This will dump a diagnostic trace to the buffer
+`*dtrt-indent-debug*'.  The trace should be self-explanatory, assuming
+that you've read the chapter on Heuritics.  (*Note Heuristics::.)
+Reading and understanding the trace should go a long way toward giving
+you an idea of which parameters need fine-tuning, if any.
+
+4.1 Eligible Line Highlighting
+==============================
+
+When reading the trace produced by `M-x dtrt-indent-diagnosis' you
+might spot an entry in the histogram and wonder "Why would dtrt-indent
+count these lines toward the histogram?".  It is possible that you
+found a bug in the way dtrt-indent determines which lines to include in
+the histogram.  To make sure, you can use `M-x dtrt-indent-highlight'
+while visiting the buffer whose analysis appears out of whack.  This
+will highlight any indentation that's been used to calculate the
+histogram and allows you to doublecheck whether or not you found a
+situation that could be improved.
+
+   Note that if you did find a situation where dtrt-indent's heuristics
+leaves a lot to be desired, tweaking its parameters won't help; most
+likely, `dtrt-indent-language-syntax-table' would need to be amended.
+
+
+File: dtrt-indent.info,  Node: Configuration,  Next: Copying,  Prev: Diagnosis,  Up: Top
+
+5 Configuration
+***************
+
+dtrt-indent's configuration can be tweaked using the standard Emacs
+customization facility; all settings can be found in the customization
+group called "dtrt-indent" which is a member of both the "files" and
+"convenience" groups.
+
+   All settings come with detailed inline documentation; therefore, this
+chapter aims to only give you a general overview of the available
+settings.
+
+   There are two settings that govern dtrt-indent's basic behaviour; all
+other parameters should be considered as fine-tuning and should only be
+tweaked after reading the chapters on heuristics (*Note: Heuristics::.)
+and diagnosis (*Note: Diagnosis::.)
+
+   The two basic settings are `dtrt-indent-verbosity' which determines
+how eloquent dtrt-indent is in telling you about what it's doing, and
+`dtrt-indent-require-confirmation-flag' which determines whether or not
+your consent is required for any change.
+
+   The remaining settings are meant for fine-tuning the heuristics:
+
+   * `dtrt-indent-min-relevant-lines' determines the minimum number of
+     non-empty, indented, eligible lines that are required for
+     dtrt-indent to attempt a guess
+
+   * `dtrt-indent-min-relevant-lines' gives the maximum number of lines
+     dtrt-indent will analyze, setting an upper bound on the amount of
+     time the analysis consumes
+
+   * `dtrt-indent-min-quality' and `dtrt-indent-min-indent-superiority'
+     are the primary variables determining how conservative dtrt-indent
+     is in accepting a guess of indentation offset
+
+   * `dtrt-indent-min-soft-tab-superiority' and
+     `dtrt-indent-min-hard-tab-superiority' determine how conservative
+     dtrt-indent is in accepting a guess of the `indent-tabs-mode'
+     setting.
+
+   * `dtrt-indent-max-merge-deviation' indicates the threshold beyond
+     which an offset is treated as a sub-offset of a larger offset with
+     similar probability
+
+   * `dtrt-indent-ignore-single-chars-flag' tells dtrt-indent whether
+     or not to analyze lines containing only a single character
+
+   * `dtrt-indent-min-matching-indentations' is a secondary variable to
+     avoid false positives
+
+   * `dtrt-indent-min-offset' and `dtrt-indent-max-offset' give the
+     smallest and largest indentation offsets that can be guessed, and
+     should normally not be tinkered with
+
+   * `dtrt-indent-accept-file-function' can be used to exclude certain
+     files from analysis based on their path
+
+
+
+File: dtrt-indent.info,  Node: Copying,  Prev: Configuration,  Up: Top
+
+6 Copying
+*********
+
+dtrt-indent is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation; either version 2, or (at your option) any
+later version.
+
+   dtrt-indent is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+   You should have received a copy of the GNU General Public License ;;
+along with this software; see the file COPYING.  If not, write to ;;
+the Free Software Foundation, Inc., 51 Franklin Street, Fifth ;; Floor,
+Boston, MA 02110-1301 USA
+
+
+
+Tag Table:
+Node: Top305
+Node: Introduction769
+Node: Usage4108
+Node: Heuristics7084
+Node: Diagnosis12460
+Node: Configuration14116
+Node: Copying16647
+
+End Tag Table
