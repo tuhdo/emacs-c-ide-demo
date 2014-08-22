@@ -3,6 +3,29 @@
 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
 
+(defconst demo-packages
+  '(company
+    ggtags
+    helm
+    helm-gtags
+    function-args
+    clean-aindent-mode
+    dtrt-indent
+    ws-butler
+    yasnippet
+    smartparens))
+
+(defun install-packages ()
+  "Install all required packages."
+  (interactive)
+  (unless package-archive-contents
+    (package-refresh-contents))
+  (dolist (package demo-packages)
+    (unless (package-installed-p package)
+      (package-install package))))
+
+(install-packages)
+
 ;; this variables must be set before load helm-gtags
 ;; you can change to any prefix key of your choice
 (setq helm-gtags-prefix-key "\C-cg")
