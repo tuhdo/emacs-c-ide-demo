@@ -3,6 +3,10 @@
 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
 
+(setq inhibit-startup-message t)
+
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 (defconst demo-packages
   '(company
     ggtags
@@ -13,7 +17,8 @@
     dtrt-indent
     ws-butler
     yasnippet
-    smartparens))
+    smartparens
+    projectile))
 
 (defun install-packages ()
   "Install all required packages."
@@ -118,3 +123,10 @@
 (require 'smartparens-config)
 (show-smartparens-global-mode +1)
 (smartparens-global-mode 1)
+
+;; Package: projejctile
+(require 'projectile)
+(projectile-global-mode)
+(setq projectile-enable-caching t)
+
+(message "Ready to play!")
