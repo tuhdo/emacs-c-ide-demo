@@ -51,12 +51,12 @@
 ;; company
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
-(define-key c-mode-map  [(tab)] 'company-clang)
-(define-key c++-mode-map  [(control tab)] 'company-clang)
+(delete 'company-semantic company-backends)
+(define-key c-mode-map  [(tab)] 'company-complete)
+(define-key c++-mode-map  [(tab)] 'company-complete)
 
 ;; company-c-headers
 (add-to-list 'company-backends 'company-c-headers)
-(define-key c-mode-base-map (kbd "C-<tab>") 'company-c-headers)
 
 ;; hs-minor-mode for folding source code
 (add-hook 'c-mode-common-hook 'hs-minor-mode)
