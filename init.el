@@ -51,6 +51,8 @@
 (require 'setup-cedet)
 (require 'setup-editing)
 
+(windmove-default-keybindings)
+
 ;; function-args
 (require 'function-args)
 (fa-config-default)
