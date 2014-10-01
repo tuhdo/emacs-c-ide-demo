@@ -8,17 +8,25 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 (defconst demo-packages
-  '(company
+  '(anzu
+    company
+    duplicate-thing
     ggtags
     helm
     helm-gtags
+    helm-swoop
     function-args
     clean-aindent-mode
+    comment-dwim-2
     dtrt-indent
     ws-butler
+    iedit
     yasnippet
     smartparens
-    projectile))
+    sml-mode
+    projectile
+    volatile-highlights
+    undo-tree))
 
 (defun install-packages ()
   "Install all required packages."
@@ -41,6 +49,7 @@
 (require 'setup-helm-gtags)
 ;; (require 'setup-ggtags)
 (require 'setup-cedet)
+(require 'setup-editing)
 
 ;; function-args
 (require 'function-args)
@@ -123,6 +132,11 @@
 
 ;; Package: smartparens
 (require 'smartparens-config)
+(setq sp-base-key-bindings 'paredit)
+(setq sp-autoskip-closing-pair 'always)
+(setq sp-hybrid-kill-entire-symbol nil)
+(sp-use-paredit-bindings)
+
 (show-smartparens-global-mode +1)
 (smartparens-global-mode 1)
 
@@ -130,5 +144,3 @@
 (require 'projectile)
 (projectile-global-mode)
 (setq projectile-enable-caching t)
-
-(message "Ready to play!")
