@@ -26,7 +26,8 @@
     sml-mode
     projectile
     volatile-highlights
-    undo-tree))
+    undo-tree
+    zygospore))
 
 (defun install-packages ()
   "Install all required packages."
@@ -146,3 +147,6 @@
 (require 'projectile)
 (projectile-global-mode)
 (setq projectile-enable-caching t)
+
+;; Package zygospore
+(global-set-key (kbd "C-x 1") 'zygospore-toggle-delete-other-windows)
