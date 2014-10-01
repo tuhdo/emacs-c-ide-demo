@@ -271,13 +271,6 @@ or region."
     (setq end (line-end-position))
     (cons beg end)))
 
-(defun kill-default-buffer ()
-  "Kill the currently active buffer -- set to C-x k so that users are not asked which buffer they want to kill."
-  (interactive)
-  (let (kill-buffer-query-functions) (kill-buffer)))
-
-(global-set-key (kbd "C-x k") 'kill-default-buffer)
-
 ;; smart openline
 (defun prelude-smart-open-line (arg)
   "Insert an empty line after the current line.
