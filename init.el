@@ -15,6 +15,7 @@
     ggtags
     helm
     helm-gtags
+    helm-projectile
     helm-swoop
     function-args
     clean-aindent-mode
