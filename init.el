@@ -14,7 +14,6 @@
     duplicate-thing
     ggtags
     helm
-    helm-projectile
     helm-gtags
     helm-projectile
     helm-swoop
