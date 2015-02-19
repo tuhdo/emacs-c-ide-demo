@@ -25,7 +25,6 @@
     iedit
     yasnippet
     smartparens
-    sml-mode
     projectile
     volatile-highlights
     undo-tree
