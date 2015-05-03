@@ -17,7 +17,7 @@
     helm-gtags
     helm-projectile
     helm-swoop
-    function-args
+    ;; function-args
     clean-aindent-mode
     comment-dwim-2
     dtrt-indent
@@ -56,17 +56,19 @@
 (windmove-default-keybindings)
 
 ;; function-args
-(require 'function-args)
-(fa-config-default)
-(define-key c-mode-map  [(tab)] 'moo-complete)
-(define-key c++-mode-map  [(tab)] 'moo-complete)
+;; (require 'function-args)
+;; (fa-config-default)
+;; (define-key c-mode-map  [(tab)] 'company-complete)
+;; (define-key c++-mode-map  [(tab)] 'company-complete)
 
 ;; company
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 (delete 'company-semantic company-backends)
-(define-key c-mode-map  [(control tab)] 'company-complete)
-(define-key c++-mode-map  [(control tab)] 'company-complete)
+(define-key c-mode-map  [(tab)] 'company-complete)
+(define-key c++-mode-map  [(tab)] 'company-complete)
+;; (define-key c-mode-map  [(control tab)] 'company-complete)
+;; (define-key c++-mode-map  [(control tab)] 'company-complete)
 
 ;; company-c-headers
 (add-to-list 'company-backends 'company-c-headers)
