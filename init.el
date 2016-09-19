@@ -8,15 +8,11 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-(defconst demo-packages
+(defvar  demo-packages
   '(anzu
     company
     duplicate-thing
     ggtags
-    helm
-    helm-gtags
-    helm-projectile
-    helm-swoop
     ;; function-args
     clean-aindent-mode
     comment-dwim-2
@@ -29,6 +25,10 @@
     volatile-highlights
     undo-tree
     zygospore))
+
+(if (version< emacs-version "24.4")
+    (append demo-packages '(ivy counsel flx))
+  (append demo-packages '(helm helm-gtags helm-projectile helm-swoop)))
 
 (defun install-packages ()
   "Install all required packages."
@@ -47,8 +47,10 @@
 
 (add-to-list 'load-path "~/.emacs.d/custom")
 
-(require 'setup-helm)
-(require 'setup-helm-gtags)
+(if (version< emacs-version "24.4")
+    (require 'setup-ivy-counsel)
+  (require 'setup-helm)
+  (require 'setup-helm-gtags))
 ;; (require 'setup-ggtags)
 (require 'setup-cedet)
 (require 'setup-editing)
@@ -150,11 +152,6 @@
 (require 'projectile)
 (projectile-global-mode)
 (setq projectile-enable-caching t)
-
-(require 'helm-projectile)
-(helm-projectile-on)
-(setq projectile-completion-system 'helm)
-(setq projectile-indexing-method 'alien)
 
 ;; Package zygospore
 (global-set-key (kbd "C-x 1") 'zygospore-toggle-delete-other-windows)

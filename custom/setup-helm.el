@@ -94,4 +94,9 @@
 
 (helm-mode 1)
 
+(require 'helm-projectile)
+(helm-projectile-on)
+(setq projectile-completion-system 'helm)
+(setq projectile-indexing-method 'alien)
+
 (provide 'setup-helm)
