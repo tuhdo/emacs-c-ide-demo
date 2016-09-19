@@ -27,7 +27,7 @@
     zygospore))
 
 (if (version< emacs-version "24.4")
-    (append demo-packages '(ivy counsel flx))
+    (append demo-packages '(ivy counsel counsel-projectile flx))
   (append demo-packages '(helm helm-gtags helm-projectile helm-swoop)))
 
 (defun install-packages ()
