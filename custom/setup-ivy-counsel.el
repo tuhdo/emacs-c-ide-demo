@@ -1,25 +1,25 @@
-(require 'ivy)
+(use-package ivy
+  :init
+  (progn
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+    (global-set-key (kbd "C-c s") 'swiper)))
 
-(ivy-mode 1)
+(use-package counsel
+  :bind
+  (("M-x" . counsel-M-x)
+   ("M-y" . counsel-yank-pop)
+   ("C-c r" . counsel-recentf)
+   ("C-x C-f" . counsel-find-file)
+   ("<f1> f" . counsel-describe-function)
+   ("<f1> v" . counsel-describe-variable)
+   ("<f1> l" . counsel-load-library)
+   ("C-h f" . counsel-describe-function)
+   ("C-h v" . counsel-describe-variable)
+   ("C-h l" . counsel-load-library)))
 
-(setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
-
-(setq ivy-use-virtual-buffers t)
-
-(global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key (kbd "M-y") 'counsel-yank-pop)
-(global-set-key (kbd "C-c r") 'counsel-recentf)
-(global-set-key (kbd "C-x C-f") 'counsel-find-file)
-(global-set-key (kbd "<f1> f") 'counsel-describe-function)
-(global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-(global-set-key (kbd "<f1> l") 'counsel-load-library)
-(global-set-key (kbd "C-h f") 'counsel-describe-function)
-(global-set-key (kbd "C-h v") 'counsel-describe-variable)
-(global-set-key (kbd "C-h l") 'counsel-load-library)
-
-(global-set-key (kbd "C-c s") 'swiper)
-
-(require 'counsel-projectile)
-(counsel-projectile-on)
+(use-package counsel-projectile
+  :init
+  (counsel-projectile-on))
 
 (provide 'setup-ivy-counsel)
