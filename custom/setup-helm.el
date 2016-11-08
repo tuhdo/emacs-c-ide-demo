@@ -3,6 +3,11 @@
   (progn
     (require 'helm-config)
     (require 'helm-grep)
+    ;; To fix error at compile:
+    ;; Error (bytecomp): Forgot to expand macro with-helm-buffer in
+    ;; (with-helm-buffer helm-echo-input-in-header-line)
+    (if (version< "26.0.50" emacs-version)
+        (eval-when-compile (require 'helm-lib)))
 
     (defun helm-hide-minibuffer-maybe ()
       (when (with-helm-buffer helm-echo-input-in-header-line)
