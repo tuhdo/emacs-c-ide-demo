@@ -1,1 +1,1 @@
-Emacs demo setup for C/C++ describe here: http://tuhdo.github.io/c-ide.html
+Emacs demo setup for C/C++ described here: http://tuhdo.github.io/c-ide.html
