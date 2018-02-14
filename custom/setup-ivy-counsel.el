@@ -20,6 +20,6 @@
 
 (use-package counsel-projectile
   :init
-  (counsel-projectile-on))
+  (counsel-projectile-mode))
 
 (provide 'setup-ivy-counsel)
