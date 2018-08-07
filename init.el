@@ -1,21 +1,60 @@
-(require 'package)
 
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/") t)
-(add-to-list 'package-archives
-             '("melpa-cn" . "http://elpa.emacs-china.org/melpa/") t)
-(add-to-list 'package-archives
-             '("org-cn"   . "http://elpa.emacs-china.org/org/") t)
-(add-to-list 'package-archives
-             '("gnu-cn"   . "http://elpa.emacs-china.org/gnu/") t)
+(when (>= emacs-major-version 24)
+  (require 'package)
+  (package-initialize)
+  (setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
+		                   ("melpa" . "http://elpa.emacs-china.org/melpa/"))))
 
-(package-initialize)
+;; 注意 elpa.emacs-china.org 是 Emacs China 中文社区在国内搭建的一个 ELPA 镜像
 
-(when (not package-archive-contents)
-    (package-refresh-contents))
+;; cl - Common Lisp Extension
+(require 'cl)
 
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
+;; Add Packages
+(defvar my/packages '(
+		              ;; --- Auto-completion ---
+		              company
+		              ;; --- Better Editor ---
+		              hungry-delete
+		              swiper
+		              counsel
+		              smartparens
+		              ;; --- Major Mode ---
+		              js2-mode
+		              ;; --- Minor Mode ---
+		              nodejs-repl
+		              exec-path-from-shell
+		              ;; --- Themes ---
+		              monokai-theme
+		              ;; solarized-theme
+                      ;; smart-mode-line
+                      minions
+                      moody
+                      validate
+                      flycheck
+                      dracula-theme
+					  android-mode
+		              anaconda-mode
+					  company-c-headers
+					  ) "Default packages")
+
+(setq package-selected-packages my/packages)
+
+(defun my/packages-installed-p ()
+  (loop for pkg in my/packages
+	    when (not (package-installed-p pkg)) do (return nil)
+	    finally (return t)))
+
+(unless (my/packages-installed-p)
+  (message "%s" "Refreshing package database...")
+  (package-refresh-contents)
+  (dolist (pkg my/packages)
+    (when (not (package-installed-p pkg))
+	  (package-install pkg))))
+
+;; Find Executable Path on OS X
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
 
 (require 'use-package)
 (setq use-package-always-ensure t)
@@ -30,58 +69,27 @@
 ;; (require 'setup-ggtags)
 (require 'setup-cedet)
 (require 'setup-editing)
+(require 'setup-c)
+(require 'setup-python)
+(require 'setup-elisp)
 
-
-
-;; function-args
-(require 'function-args)
-(fa-config-default)
-;; (define-key c-mode-map  [(tab)] 'company-complete)
-;; (define-key c++-mode-map  [(tab)] 'company-complete)
-
-
-(setq initial-frame-alist (quote ((fullscreen . maximized))))
-(set-face-attribute 'default nil :height 140)
-
-(add-hook 'prog-mode-hook
-          '(lambda ()
-             (smartparens-mode t)
-             (aggressive-indent-mode t)
-             (linum-mode t)))
-
-(add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
-
-(require 'sr-speedbar)
-(global-set-key (kbd "s-s") 'sr-speedbar-toggle)
-
-;; hlt-hlight
-(global-set-key [f8] 'hlt-highlight-symbol)
-(global-set-key [f9] 'hlt-unhighlight-symbol)
-
-(global-hl-line-mode t)
-
-(define-key global-map (kbd "C-c t") 'helm-tramp)
-
-
-(require 'recentf)
-(recentf-mode t)
-(setq recentf-max-menu-item 10)
-
-(load-theme 'manoj-dark)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(column-number-mode t)
  '(custom-safe-themes
    (quote
-    ("bd7b7c5df1174796deefce5debc2d976b264585d51852c962362be83932873d9" default)))
+	("aaffceb9b0f539b6ad6becb8e96a04f2140c8faa1de8039a343a4f1e009174fb" "3cd4f09a44fe31e6dd65af9eb1f10dc00d5c2f1db31a427713a1784d7db7fdfc" "84d2f9eeb3f82d619ca4bfffe5f157282f4779732f48a5ac1484d94d5ff5b279" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "bd7b7c5df1174796deefce5debc2d976b264585d51852c962362be83932873d9" default)))
+ '(gud-gdb-command-name "aarch64-none-elf-gdb -i=mi")
  '(helm-mode t)
  '(moo-do-includes t)
  '(package-selected-packages
    (quote
-    (aggressive-indent smartparens helm-tramp highlight magit function-args monokai-theme zygospore helm-gtags helm yasnippet ws-butler volatile-highlights use-package undo-tree iedit dtrt-indent counsel-projectile company clean-aindent-mode anzu))))
+	(realgud company-anaconda android-mode anaconda-mode company-c-headers dashboard dracula-theme flycheck validate moody minions powerline nyx-theme nyan-mode markdown-preview-eww markdown-preview-mode markdown-mode+ markdown-mode gh-md aggressive-indent smartparens helm-tramp highlight magit function-args monokai-theme zygospore helm-gtags helm yasnippet ws-butler volatile-highlights use-package undo-tree iedit dtrt-indent counsel-projectile company clean-aindent-mode anzu)))
+ '(size-indication-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
