@@ -1,3 +1,16 @@
+;;; setup-general.el --- Initialization file for Emacs
+
+;;; Commentary: Emacs Startup File --- initialization for Emacs
+;; Copyright (C) 2012-2017 John Wiegley
+
+;; Author: John Wiegley <johnw@newartisans.com>
+;; Maintainer: John Wiegley <johnw@newartisans.com>
+;; Created: 17 Jun 2012
+;; Modified: 29 Nov 2017
+;; Version: 2.4
+;; Package-Requires: ((emacs "24.3") (bind-key "2.4"))
+;; Keywords: dotemacs startup speed config package
+;; URL: https://github.com/jwiegley/use-package
 
 ;; general setup, theme, global operations etc.
 
@@ -19,14 +32,14 @@
 ;; set appearance of a tab that is represented by 4 spaces
 (setq-default tab-width 4)
 
-;; Compilation
-(global-set-key (kbd "<f5>") (lambda ()
-                               (interactive)
-                               (setq-local compilation-read-command nil)
-                               (call-interactively 'compile)))
+;; ;; Compilation
+;; (global-set-key (kbd "<f5>") (lambda ()
+;;                                (interactive)
+;;                                (setq-local compilation-read-command nil)
+;;                                (call-interactively 'compile)))
 
 ;; setup GDB
-(setq
+(setq-default
  ;; use gdb-many-windows by default
  gdb-many-windows t
 
@@ -43,7 +56,7 @@
 ;; Package: projejctile
 (use-package projectile
   :init
-  (projectile-global-mode)
+  (projectile-mode t)
   (setq projectile-enable-caching t))
 
 ;; Package zygospore
@@ -59,11 +72,15 @@
 
 (require 'recentf)
 (recentf-mode t)
-(setq recentf-max-menu-item 10)
+(setq-default recentf-max-menu-item 20)
 
-(add-hook 'after-init-hook
-          '(lambda ()
-             (load-theme 'dracula t)))
+(use-package dracula-theme
+  :ensure t
+  :config
+  :init
+  (add-hook 'after-init-hook
+			'(lambda ()
+			   (load-theme 'dracula t))))
 
 (use-package dashboard
   :ensure t
@@ -103,8 +120,13 @@
 
 ;; (setq sml/theme 'smart-mode-line-powerline)
 ;; (add-hook 'after-init-hook 'sml/setup)
-;; (require 'vc-mode)
-(require 'flycheck)
+
+(use-package flycheck
+  :ensure t
+  :init
+  (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
+  (global-flycheck-mode t))
+
 (use-package minions
   :ensure t
   :init (minions-mode)
@@ -123,5 +145,78 @@
 (menu-bar-mode t)
 (tool-bar-mode -1)
 (set-scroll-bar-mode -1)
+
+;; for occur
+(defun occur-dwim ()
+  "Call `occur' with a sane default." (interactive)
+  (push (if (region-active-p)
+			(buffer-substring-no-properties (region-beginning)
+											(region-end))
+		  (let ((sym (thing-at-point 'symbol)))
+			(when (stringp sym)
+			  (regexp-quote sym))))
+		regexp-history)
+  (call-interactively 'occur))
+(global-set-key (kbd "M-s o") 'occur-dwim)
+
+(defun hidden-dos-eol ()
+  "Do not show ^M in files containing mixed UNIX and DOS line endings."
+  (interactive)
+  (unless buffer-display-table
+    (setq buffer-display-table (make-display-table)))
+  (aset buffer-display-table ?\^M []))
+
+(defvar scratch-run-alist
+  '(("java"   . java-mode)
+    ("c++"    . c++-mode)
+    ("perl"   . perl-mode)
+    ("python" . python-mode)
+    ("js"     . javascript-mode)
+    ("j"      . j-mode)
+    ("tcl"    . tcl-mode))
+  "生成草稿buffer的简短mode名称列表")
+(defun scratch-run ()
+  "Run a scratch"
+  (interactive)
+  (let ((mode (ido-completing-read
+               "What kind of scratch mode ?:"
+               (append (all-completions ""
+                                        obarray
+                                        (lambda (s)
+                                          (and (fboundp s)
+                                               (string-match "-mode$" (symbol-name s)))))
+                       (mapcar 'car scratch-run-alist)))))
+    (pop-to-buffer (get-buffer-create (format "* scratch * %s *" mode)))
+    (funcall (if (assoc mode scratch-run-alist)
+                 (cdr (assoc mode scratch-run-alist))
+               (intern mode)))
+    ))
+
+(use-package ace-window
+  :ensure t
+  :init
+  (global-set-key (kbd "M-o") 'ace-window))
+
+(use-package which-key
+  :ensure t
+  :init
+  (which-key-mode t))
+
+(require 's)
+(defun retrieve-chrome-current-tab-url()
+  "Get the URL of the active tab of the first window"
+  (interactive)
+  (let ((result (do-applescript
+                 (concat
+                  "set frontmostApplication to path to frontmost application\n"
+                  "tell application \"Google Chrome\"\n"
+                  " set theUrl to get URL of active tab of first window\n"
+                  " set theResult to (get theUrl) \n"
+                  "end tell\n"
+                  "activate application (frontmostApplication as text)\n"
+                  "set links to {}\n"
+                  "copy theResult to the end of links\n"
+                  "return links as string\n"))))
+    (format "%s" (s-chop-suffix "\"" (s-chop-prefix "\"" result)))))
 
 (provide 'setup-general)
