@@ -91,12 +91,14 @@
 
 (set-face-attribute 'default nil :height 140)
 
-(setq org-agenda-files '("~/DropBox/org"))
+(setq org-agenda-files '("~/Dropbox/org"))
 
 (define-key global-map (kbd "C-c t") 'helm-tramp)
 
-(require 'sr-speedbar)
-(global-set-key (kbd "s-s") 'sr-speedbar-toggle)
+(use-package sr-speedbar
+  :ensure t
+  :init
+  (global-set-key (kbd "s-s") 'sr-speedbar-toggle))
 
 ;; hlt-hlight
 (global-set-key [f8] 'hlt-highlight-symbol)
@@ -104,6 +106,11 @@
 
 (global-hl-line-mode t)
 (global-auto-revert-mode t)
+
+;; aggressive-indent
+(use-package aggressive-indent
+  :ensure t
+  :init)
 
 (add-hook 'prog-mode-hook
           '(lambda ()
@@ -115,8 +122,10 @@
              (show-paren-mode t)))
 
 ;; function-args
-(require 'function-args)
-(fa-config-default)
+(use-package function-args
+  :ensure t
+  :init
+  ())
 
 ;; (setq sml/theme 'smart-mode-line-powerline)
 ;; (add-hook 'after-init-hook 'sml/setup)
@@ -124,6 +133,7 @@
 (use-package flycheck
   :ensure t
   :init
+  :config
   (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
   (global-flycheck-mode t))
 

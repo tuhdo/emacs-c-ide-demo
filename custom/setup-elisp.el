@@ -8,6 +8,9 @@
 			(set (make-local-variable 'company-backends)
 				 '((company-elisp company-keywords company-dabbrev)))))
 
-(add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
+(use-package aggressive-indent
+  :ensure t
+  :init
+  (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode))
 
 (provide 'setup-elisp)
