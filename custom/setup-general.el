@@ -1,3 +1,4 @@
+
 ;;; setup-general.el --- Initialization file for Emacs
 
 ;;; Commentary: Emacs Startup File --- initialization for Emacs
@@ -153,8 +154,8 @@
 
 ;; (add-hook 'after-init-hook #'global-flycheck-mode)
 (menu-bar-mode t)
-(tool-bar-mode -1)
-(set-scroll-bar-mode -1)
+(tool-bar-mode 0)
+(set-scroll-bar-mode 0)
 
 ;; for occur
 (defun occur-dwim ()
