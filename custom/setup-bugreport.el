@@ -1,5 +1,6 @@
 
 
+
 (defun android-trace-modify ()
   "Better to show android traces file with org mode."
   (goto-char (point-min))
@@ -49,10 +50,45 @@
           )))
 
 ;;;###autoload
-(define-derived-mode android-trace-mode c-mode "android trace mode"
+(define-derived-mode android-trace-mode text-mode  "android trace mode"
   "Major mode for editing LSL (Linden Scripting Language)…"
 
   ;; code for syntax highlighting
   (setq font-lock-defaults '((android-trace-font-lock-keywords))))
+
+
+(setq mode-line-format (delete (assoc 'which-func-mode
+                                      mode-line-format) mode-line-format)
+      which-func-header-line-format '(which-func-mode ("" which-func-format)))
+
+(defun android-trace-get-cmd-at-point(&optional pline pcol)
+  (let ((result "???")
+		)
+	(message "find function name sample")
+    (setq result "aaaaaaa")
+	result
+	)
+  )
+
+;; for debug
+(defun android-trace-cmd-at-point()
+  (interactive)
+  (message "%s" (android-trace-get-cmd-at-point)))
+
+(add-hook 'android-trace-mode-hook
+		  (lambda ()
+			(which-function-mode t)
+			(add-hook 'which-func-functions 'android-trace-get-cmd-at-point t t)))
+
+;; Show the current function name in the header line
+(setq-default header-line-format
+              '((which-func-mode ("" which-func-format " "))))
+
+(setq mode-line-misc-info
+      ;; We remove Which Function Mode from the mode line, because it's mostly
+      ;; invisible here anyway.
+      (assq-delete-all 'which-func-mode mode-line-misc-info))
+
+(setq-default which-func-unknown "N/A")
 
 (provide 'setup-bugreport)
