@@ -90,7 +90,7 @@
             '(lambda ()
                (dashboard-setup-startup-hook))))
 
-(set-face-attribute 'default nil :height 140)
+(set-face-attribute 'default nil :height 120)
 
 (setq org-agenda-files '("~/Dropbox/org"))
 
@@ -102,8 +102,11 @@
   (global-set-key (kbd "s-s") 'sr-speedbar-toggle))
 
 ;; hlt-hlight
-(global-set-key [f8] 'hlt-highlight-symbol)
-(global-set-key [f9] 'hlt-unhighlight-symbol)
+(use-package highlight
+  :ensure t
+  :init
+  (global-set-key [f8] 'hlt-highlight-symbol)
+  (global-set-key [f9] 'hlt-unhighlight-symbol))
 
 (global-hl-line-mode t)
 (global-auto-revert-mode t)
@@ -153,9 +156,9 @@
   (moody-replace-vc-mode))
 
 ;; (add-hook 'after-init-hook #'global-flycheck-mode)
-(menu-bar-mode t)
+(menu-bar-mode 0)
 (tool-bar-mode 0)
-(set-scroll-bar-mode 0)
+(scroll-bar-mode 0)
 
 ;; for occur
 (defun occur-dwim ()
