@@ -102,7 +102,7 @@
   (global-set-key (kbd "s-s") 'sr-speedbar-toggle))
 
 ;; hlt-hlight
-(use-package 'highlight
+(use-package highlight
   :ensure t
   :init
   (global-set-key [f8] 'hlt-highlight-symbol)
