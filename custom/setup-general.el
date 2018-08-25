@@ -20,6 +20,8 @@
 (setq gc-cons-threshold 100000000)
 (setq inhibit-startup-message t)
 
+(setq backup-directory-alist (quote (("." . "~/.backups"))))
+
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; show unncessary whitespace that can mess up your diff
