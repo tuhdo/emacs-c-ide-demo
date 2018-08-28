@@ -24,6 +24,8 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+(global-set-key (kbd "C-=") 'er/expand-region)
+
 ;; show unncessary whitespace that can mess up your diff
 (add-hook 'prog-mode-hook
           (lambda () (interactive)
