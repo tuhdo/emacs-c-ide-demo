@@ -62,18 +62,23 @@
       which-func-header-line-format '(which-func-mode ("" which-func-format)))
 
 (defun android-trace-get-cmd-at-point(&optional pline pcol)
-  (let ((result "???")
-		)
-	(message "find function name sample")
-    (setq result "aaaaaaa")
-	result
-	)
-  )
+  (let (start end result)
+	(setq result "Not Found")
+	(save-excursion
+	  (if (re-search-backward "Cmd line" nil t)
+		  (progn
+			(setq start (point))
+			(move-end-of-line nil)
+			(setq end (point))
+			(setq result (buffer-substring-no-properties start end))))
+	  result)))
 
 ;; for debug
 (defun android-trace-cmd-at-point()
   (interactive)
-  (message "%s" (android-trace-get-cmd-at-point)))
+  (let (result)
+	(setq result (android-trace-get-cmd-at-point))
+	(if result (message result) (message "Not Found"))))
 
 (add-hook 'android-trace-mode-hook
 		  (lambda ()
