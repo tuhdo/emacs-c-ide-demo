@@ -40,6 +40,10 @@
              (x-functions-regexp (regexp-opt x-functions 'words)))
 
         `(
+		  ;; reference http://ergoemacs.org/emacs/elisp_font_lock_mode.html
+		  ("\\[[^\]]+\\]" . font-lock-comment-face)
+		  ("^<[^>]+>" . font-lock-comment-face)
+		  ("=\\([0-9]+\\)" . (1 font-lock-keyword-face))
           (,x-types-regexp . font-lock-type-face)
           (,x-constants-regexp . font-lock-constant-face)
           (,x-events-regexp . font-lock-builtin-face)
