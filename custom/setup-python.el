@@ -18,6 +18,7 @@
 
 (add-hook 'python-mode-hook
           (lambda ()
+			(semantic-mode 0)
 			(anaconda-mode t)
             (set (make-local-variable 'company-backends)
 				 '((company-anaconda company-dabbrev-code company-capf) company-dabbrev))
