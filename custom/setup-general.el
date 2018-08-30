@@ -95,6 +95,8 @@
                (dashboard-setup-startup-hook))))
 
 (set-face-attribute 'default nil :height 120)
+(when (memq window-system '(mac ns))
+  (set-face-attribute 'default nil :height 140))
 
 (setq org-agenda-files '("~/Dropbox/org"))
 
@@ -214,6 +216,12 @@
   :ensure t
   :init
   (global-set-key (kbd "M-o") 'ace-window))
+
+(use-package popwin
+  :ensure t
+  :init
+  :config
+  (popwin-mode 1))
 
 (use-package which-key
   :ensure t
