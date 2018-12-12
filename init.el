@@ -1,4 +1,5 @@
 
+
 (when (>= emacs-major-version 24)
   (require 'package)
   (package-initialize)
@@ -92,7 +93,7 @@
  '(moo-do-includes t)
  '(package-selected-packages
    (quote
-	(pyenv-mode-auto solarized-theme ace-window which-key realgud company-anaconda android-mode anaconda-mode company-c-headers dashboard dracula-theme flycheck validate moody minions powerline nyx-theme nyan-mode markdown-preview-eww markdown-preview-mode markdown-mode+ markdown-mode gh-md aggressive-indent smartparens helm-tramp highlight magit function-args monokai-theme zygospore helm-gtags helm yasnippet ws-butler volatile-highlights use-package undo-tree iedit dtrt-indent counsel-projectile company clean-aindent-mode anzu)))
+	(hs-minor-mode pyenv-mode-auto solarized-theme ace-window which-key realgud company-anaconda android-mode anaconda-mode company-c-headers dashboard dracula-theme flycheck validate moody minions powerline nyx-theme nyan-mode markdown-preview-eww markdown-preview-mode markdown-mode+ markdown-mode gh-md aggressive-indent smartparens helm-tramp highlight magit function-args monokai-theme zygospore helm-gtags helm yasnippet ws-butler volatile-highlights use-package undo-tree iedit dtrt-indent counsel-projectile company clean-aindent-mode anzu)))
  '(size-indication-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

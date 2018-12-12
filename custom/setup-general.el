@@ -73,6 +73,9 @@
 
 ;; activate whitespace-mode to view all whitespace characters
 (global-set-key (kbd "C-c w") 'whitespace-mode)
+(hs-minor-mode 1)
+(global-set-key (kbd "C-C C-,") 'hs-toggle-hiding)
+
 (windmove-default-keybindings)
 
 (require 'recentf)
