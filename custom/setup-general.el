@@ -24,6 +24,7 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+(toggle-truncate-lines t)
 (global-set-key (kbd "C-=") 'er/expand-region)
 
 ;; show unncessary whitespace that can mess up your diff
