@@ -32,6 +32,7 @@
 (add-hook 'c-mode-common-hook
           (lambda ()
 			(hs-minor-mode t)
+            (define-key (kbd "C-C C-,") 'hs-toggle-hiding)
             (set (make-local-variable 'company-backends)
                  '((company-c-headers company-gtags company-clang company-keywords company-dabbrev)))))
 
