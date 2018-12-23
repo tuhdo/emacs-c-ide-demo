@@ -127,7 +127,6 @@
 (add-hook 'prog-mode-hook
           '(lambda ()
              (smartparens-mode t)
-             (aggressive-indent-mode t)
              (define-key global-map (kbd "M-r") 'helm-gtags-find-rtag)
              (define-key global-map (kbd "M-t") 'helm-dwim-target)
              (linum-mode t)

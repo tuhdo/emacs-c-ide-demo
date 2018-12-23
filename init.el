@@ -50,7 +50,8 @@
 	  (package-install pkg))))
 
 ;; Find Executable Path on OS X
-(when (memq window-system '(mac ns))
+(when (featurep 'cocoa)
+  (require 'exec-path-from-shell)
   (exec-path-from-shell-initialize))
 
                                         ; (require 'use-package)
@@ -63,6 +64,29 @@
 (setq use-package-always-ensure t)
 
 (add-to-list 'load-path "~/.emacs.d/custom")
+
+(use-package lsp-mode
+  :commands lsp
+  :init
+  (setq lsp-auto-guess-root t)    ; 我習慣自動選project root
+  ;; (setq lsp-prefer-flymake t)  ; 預設t。flymake替代flycheck
+  :config
+  (require 'lsp-clients)          ; ocaml,css,python,bash,...
+  )
+
+(use-package lsp-java
+  :hook (java-mode . (lambda () (require 'lsp-java) (lsp))))
+(use-package ccls
+  :hook ((c-mode c++-mode objc-mode) . (lambda () (require 'ccls) (lsp))))
+(use-package lsp-mode
+  :commands lsp
+  :hook ((c-mode c++-mode objc-mode) . lsp))
+(add-hook 'python-mode-hook #'lsp)
+
+(use-package company-lsp
+  :config
+  ;; 设置 company-lsp 为后端
+  (push 'company-lsp company-backends))
 
 (require 'setup-general)
 (if (version< emacs-version "24.4")
@@ -93,7 +117,7 @@
  '(moo-do-includes t)
  '(package-selected-packages
    (quote
-	(hs-minor-mode pyenv-mode-auto solarized-theme ace-window which-key realgud company-anaconda android-mode anaconda-mode company-c-headers dashboard dracula-theme flycheck validate moody minions powerline nyx-theme nyan-mode markdown-preview-eww markdown-preview-mode markdown-mode+ markdown-mode gh-md aggressive-indent smartparens helm-tramp highlight magit function-args monokai-theme zygospore helm-gtags helm yasnippet ws-butler volatile-highlights use-package undo-tree iedit dtrt-indent counsel-projectile company clean-aindent-mode anzu)))
+	(lsp-imenu eglot ccls lsp-java lsp-clangd lsp-common lsp-python pyls lsp-ui company-lsp elogcat hs-minor-mode pyenv-mode-auto solarized-theme ace-window which-key realgud company-anaconda android-mode anaconda-mode company-c-headers dashboard dracula-theme flycheck validate moody minions powerline nyx-theme nyan-mode markdown-preview-eww markdown-preview-mode markdown-mode+ markdown-mode gh-md aggressive-indent smartparens helm-tramp highlight magit function-args monokai-theme zygospore helm-gtags helm yasnippet ws-butler volatile-highlights use-package undo-tree iedit dtrt-indent counsel-projectile company clean-aindent-mode anzu)))
  '(size-indication-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

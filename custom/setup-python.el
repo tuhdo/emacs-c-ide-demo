@@ -1,3 +1,4 @@
+
 (use-package anaconda-mode)
 
 (use-package pyenv-mode
@@ -15,14 +16,12 @@
 
 (use-package pyenv-mode-auto
   :ensure t)
-
-(add-hook 'python-mode-hook
-          (lambda ()
-			(semantic-mode 0)
-			(anaconda-mode t)
-            (set (make-local-variable 'company-backends)
-				 '((company-anaconda company-dabbrev-code company-capf) company-dabbrev))
-			(pyenv-mode t)))
-
+;; (add-hook 'python-mode-hook
+;;           (lambda ()
+;; 			(semantic-mode 0)
+;; 			(anaconda-mode t)
+;;             (set (make-local-variable 'company-backends)
+;; 				 '((company-anaconda company-dabbrev-code company-capf) company-dabbrev))
+;; 			(pyenv-mode t)))
 
 (provide 'setup-python)
