@@ -27,12 +27,14 @@
 (use-package cc-mode
   :init
   (define-key c-mode-map  [(tab)] 'company-complete)
+  (define-key c-mode-map (kbd "C-C C-,") 'hs-toggle-hiding)
+  (define-key c++-mode-map (kbd "C-C C-,") 'hs-toggle-hiding)
   (define-key c++-mode-map  [(tab)] 'company-complete))
 
 (add-hook 'c-mode-common-hook
           (lambda ()
 			(hs-minor-mode t)
-            (define-key (kbd "C-C C-,") 'hs-toggle-hiding)
+			(helm-gtags-mode t)
             (set (make-local-variable 'company-backends)
                  '((company-c-headers company-gtags company-clang company-keywords company-dabbrev)))))
 

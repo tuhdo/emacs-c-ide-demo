@@ -38,6 +38,15 @@
 ;; set appearance of a tab that is represented by 4 spaces
 (setq-default tab-width 4)
 
+(defun my-find-file-check-make-large-file-read-only-hook ()
+  "If a file is over a given size, make the buffer read only."
+  (when (> (buffer-size) (* 5 1024 1024))
+    (setq buffer-read-only t)
+    (buffer-disable-undo)
+    (fundamental-mode)))
+
+(add-hook 'find-file-hook 'my-find-file-check-make-large-file-read-only-hook)
+
 ;; ;; Compilation
 ;; (global-set-key (kbd "<f5>") (lambda ()
 ;;                                (interactive)
@@ -129,6 +138,7 @@
              (smartparens-mode t)
              (define-key global-map (kbd "M-r") 'helm-gtags-find-rtag)
              (define-key global-map (kbd "M-t") 'helm-dwim-target)
+             (define-key global-map (kbd "M-i") 'helm-imenu)
              (linum-mode t)
              (show-paren-mode t)))
 
